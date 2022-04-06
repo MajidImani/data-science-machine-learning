@@ -1,0 +1,2 @@
+https://towardsdatascience.com/building-a-simple-machine-learning-model-on-breast-cancer-data-eca4b3b99fa3
+https://pyimagesearch.com/2019/02/18/breast-cancer-classification-with-keras-and-deep-learning/
