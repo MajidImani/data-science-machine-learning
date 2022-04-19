@@ -1,0 +1,2 @@
+https://betterprogramming.pub/build-your-own-plagiarism-checker-with-python-and-machine-learning-7e81877fd970
+https://towardsdatascience.com/build-a-plagiarism-checker-using-machine-learning-6538110ce162
