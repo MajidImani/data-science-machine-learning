@@ -1,3 +1,4 @@
+from socket import ntohl
 import nltk
 nltk.download('punkt')
 from nltk.stem.lancaster import LancasterStemmer
@@ -18,17 +19,23 @@ docs_x = [] #List of all the question_patterns.
 docs_y = [] #List of all the tags for specific Texts.
 
 for intent in dataset["intents"]:
-    for pattern in intent["txts"]: #Stems the words. Finds the root of the word. Removes extra characters and symbols to find the root word. 
-        split_words = nltk.word_tokenize(pattern) #Tokenizes the words. Breakes the words in the places of spaces and returns a list of all the words in it.        
-        list_words.extend(split_words) #Using instead of looping and adding one word at a time in the list. It just extends the list untill all the words are in it.    
-        docs_x.append(split_words) #Adding the pattern of words inside docs_x list.
-        docs_y.append(intent["tag"]) #For each pattern, it says what Tag it is a part of.
+    # for pattern in intent["txts"]: #Stems the words. Finds the root of the word. Removes extra characters and symbols to find the root word. 
+    split_words = nltk.word_tokenize(intent["txts"]) #Tokenizes the words. Breakes the words in the places of spaces and returns a list of all the words in it.        
+    list_words.extend(split_words) #Using instead of looping and adding one word at a time in the list. It just extends the list untill all the words are in it.    
+    docs_x.append(split_words) #Adding the pattern of words inside docs_x list.
+    docs_y.append(intent["tag"]) #For each pattern, it says what Tag it is a part of.
 
     if intent["tag"] not in labels:
         labels.append(intent["tag"]) #Adds all the tags in the labels list.
 
-list_words = [stemmer.stem(w.lower()) for w in list_words if w != "?"] #Lower cases all the words in the list_words list. 
-list_words = sorted(list(set(list_words))) #Makes a set of the words to remove duplicate. This gives us the actual vocabulary size of the intent. Then converts it back to list and sorts it. 
+#Lower cases all the words in the list_words list. 
+list_words = [stemmer.stem(w.lower()) for w in list_words if w != "?"] 
+# Makes a set of the words to remove duplicate. 
+# This gives us the actual vocabulary size of the intent.
+# Then converts it back to list and sorts it. 
+list_words = sorted(list(set(list_words)))
+
+print(list_words , labels)
 
 labels = sorted(labels) #Sorts the labels where the tags are stored.
 training = [] #contains the bag of words.
@@ -89,6 +96,6 @@ try:
     model.predict(PATH + "\\model.tflearn")
     model.load()
 except:
-    model.fit(training, output, n_epoch=1, batch_size=8, show_metric=True) #Fitting our data to the model. The number of epochs we set is the amount of times that the model will see the same information while training.
+    model.fit(training, output, n_epoch=2000, batch_size=8, show_metric=True) #Fitting our data to the model. The number of epochs we set is the amount of times that the model will see the same information while training.
     model.save(PATH + "\\model.tflearn") #we can save it to the file model.tflearn for use in other scripts.
     
